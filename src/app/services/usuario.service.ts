@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 
 import { loginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form-interface';
+import { Usuario } from '../models/usuario.model';
 
 const base_url=environment.base_url;
 declare const gapi:any;
@@ -17,8 +18,10 @@ declare const gapi:any;
 export class UsuarioService {
 
   public auth2:any='';
+  public usuario?:Usuario;
   constructor(private http:HttpClient, private router:Router, private ngZone:NgZone) {
     this.googleInit();
+
    }
 
   googleInit(){
@@ -48,20 +51,31 @@ export class UsuarioService {
 
   }
   validarToken():Observable<boolean>{
-    const token=localStorage.getItem('token')|| '';
+    const token=this.token;
     return this.http.get(`${base_url}/login/renew`, {
       headers:{
         'x-token':token
       }
     }).pipe(
-      tap((resp:any)=>{
+      map((resp:any)=>{
+        const { email, nombre, apellido, google, role, uid, img=''} = resp.usuario;
+        this.usuario=new Usuario(nombre,email, apellido,'', img, uid, role, google);
         localStorage.setItem('token', resp.token);
+        return true;
       }),
-      map(rest=> true),
-      catchError(error=> of(false))
+      catchError(error=> {
+        console.log(error);
+        return of(false);
+      })
     );
   }
 
+  get token():string{
+    return localStorage.getItem('token')||'';
+  }
+  get uid():String{
+    return this.usuario?.uid || '';
+  }
   crearUSuario( formData:RegisterForm){
 
     return this.http.post(`${base_url}/usuarios`, formData)
@@ -71,6 +85,17 @@ export class UsuarioService {
 
         })
       )
+  }
+
+  actualizarPerfil(data:{email:string, nombre:string, apellido:string, role:string }){
+    data={
+      ...data,
+      role:this.usuario?.role||''
+    }
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {headers:{
+      'x-token':this.token
+    }})
+
   }
 
   login( formData:loginForm){
