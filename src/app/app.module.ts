@@ -13,7 +13,7 @@ import { ChartsModule  } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
-    NopagefoundComponent,
+    NopagefoundComponent
   ],
   imports: [
     BrowserModule,

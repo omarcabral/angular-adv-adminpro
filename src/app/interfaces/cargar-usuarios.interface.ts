@@ -4,3 +4,4 @@ export interface CargarUsuario{
   totalRegistros:number;
   usuarios:Usuario[];
 }
+
