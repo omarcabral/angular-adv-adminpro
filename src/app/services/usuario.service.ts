@@ -28,7 +28,6 @@ export class UsuarioService {
   googleInit(){
 
     return new Promise<void>( resolve =>{
-      console.log('google init');
       gapi.load('auth2', ()=>{
         // Retrieve the singleton for the GoogleAuth library and set up the client.
         this.auth2 = gapi.auth2.init({
@@ -42,6 +41,8 @@ export class UsuarioService {
   }
   logout(){
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
+    //TODO borrar menu
 
     this.auth2.signOut().then(()=>{
       this.ngZone.run(()=>{
@@ -50,6 +51,11 @@ export class UsuarioService {
 
     });
 
+  }
+
+  guardarLocalStorage(token:string, menu:any){
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
   }
   validarToken():Observable<boolean>{
     const token=this.token;
@@ -60,8 +66,8 @@ export class UsuarioService {
     }).pipe(
       map((resp:any)=>{
         const { email, nombre, apellido, google, role, uid, img=''} = resp.usuario;
-        this.usuario=new Usuario(nombre,email, apellido,'', img, uid, role, google);
-        localStorage.setItem('token', resp.token);
+        this.usuario=new Usuario(nombre,email, apellido,role, '',img, uid, google);
+        this.guardarLocalStorage(resp.token, resp.menu);
         return true;
       }),
       catchError(error=> {
@@ -80,16 +86,19 @@ export class UsuarioService {
   get token():string{
     return localStorage.getItem('token')||'';
   }
-  get uid():String{
+  get uid():string{
     return this.usuario?.uid || '';
+  }
+
+  get role():'ADMIN_ROLE'|'USER_ROLE'{
+    return this.usuario?.role || 'USER_ROLE';
   }
   crearUSuario( formData:RegisterForm){
 
     return this.http.post(`${base_url}/usuarios`, formData)
       .pipe(
         tap((resp:any)=>{
-          localStorage.setItem('token', resp.token)
-
+          this.guardarLocalStorage(resp.token, resp.menu);
         })
       )
   }
@@ -108,8 +117,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
         tap((resp:any)=>{
-          localStorage.setItem('token', resp.token)
-
+          this.guardarLocalStorage(resp.token, resp.menu);
         })
       )
   }
@@ -117,8 +125,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login/google`, {token})
       .pipe(
         tap((resp:any)=>{
-          localStorage.setItem('token', resp.token)
-
+          this.guardarLocalStorage(resp.token, resp.menu);
         })
       )
   }
@@ -131,7 +138,7 @@ export class UsuarioService {
         delay(1000),
         map(resp=>{
           const usuarios=resp.usuarios.map(
-            user=> new Usuario(user.nombre, user.email, user.apellido, '', user.img, user.uid, user.role, user.google)
+            user=> new Usuario(user.nombre, user.email, user.apellido, user.role, '',user.img, user.uid, user.google)
             );
 
           return {

@@ -47,7 +47,6 @@ export class MedicosComponent implements OnInit, OnDestroy {
     )
     .subscribe(img =>
       {
-      console.log(img);
       this.cargarMedicos();
       });
    }
@@ -89,13 +88,11 @@ export class MedicosComponent implements OnInit, OnDestroy {
     }
       this.busquedaService.buscar('medicos', termino)
       .subscribe((resp:any)=>{
-        console.log(resp);
         this.medicos=resp;
       });
 
   }
   abrirModal(medico:Medico){
-    console.log(medico);
     this.modalImagenService.abrirModal('medicos', medico._id||'', medico.img||'');
 
   }

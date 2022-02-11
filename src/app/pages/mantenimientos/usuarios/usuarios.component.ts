@@ -42,7 +42,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     )
     .subscribe(img =>
       {
-      console.log(img);
       this.cargarUsuarios();
       });
    }
@@ -81,9 +80,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
       this.busquedaService.buscar('usuarios', termino)
       .subscribe((resp:any)=>{
-        console.log(resp);
         this.usuarios=resp;
-        console.log(this.usuarioService);
       });
 
   }
@@ -129,10 +126,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           icon:'success'
         })
       })
-    console.log(usuario);
   }
   abrirModal(usuario:Usuario){
-    console.log(usuario);
     this.modalImagenService.abrirModal('usuarios', usuario.uid||'', usuario.img||'');
 
   }

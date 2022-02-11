@@ -31,10 +31,10 @@ export class PerfilComponent implements OnInit {
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
   });
-  public usuario:Usuario= new Usuario('','','');
+  public usuario:Usuario= new Usuario('','','','USER_ROLE');
 
   constructor(private fb:FormBuilder, private usuarioService:UsuarioService, private uploadService:FileUploadService) {
-    this.usuario=this.usuarioService.usuario||new Usuario('', '', '','', '');
+    this.usuario=this.usuarioService.usuario||new Usuario('', '', '','USER_ROLE', '');
 
     this.perfilForm = this.fb.group({
       nombre:[this.usuario.nombre, Validators.required],
@@ -73,14 +73,12 @@ export class PerfilComponent implements OnInit {
     file=event.target.files[0];
 
     this.imagenSubir = file;
-    console.log(this.imagenSubir);
 
     }
 
 
 
   subirImagen(){
-    console.log('subiendo imagen');
     this.uploadService.actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid||'')
     .then(img =>{
       this.usuario.img=img;

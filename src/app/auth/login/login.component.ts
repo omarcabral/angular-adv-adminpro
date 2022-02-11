@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
         else{
           localStorage.removeItem('email');
         }
-        Swal.fire('Usuario validado', 'Validado', 'success');
         this.router.navigateByUrl('/');
       }, (err)=>{
         Swal.fire('Error', err.error.msj, 'error');
@@ -62,11 +61,9 @@ export class LoginComponent implements OnInit {
   };
 
   attachSignin(element:any) {
-    console.log(element.id);
     this.auth2.attachClickHandler(element, {},
         (googleUser:any) => {
           const id_token=googleUser.getAuthResponse().id_token;
-          console.log(id_token);
           this.usuarioService.loginGoogle(id_token).subscribe(resp=>{
             //TODO mover al dashboard
             this.ngZone.run(()=>{

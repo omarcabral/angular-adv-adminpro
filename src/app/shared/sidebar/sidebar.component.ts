@@ -11,11 +11,9 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class SidebarComponent implements OnInit {
 
-  public usuario:Usuario= new Usuario('','','');
-  menuItems: any[];
-  constructor(private sidebarService: SidebarService, private usuarioService:UsuarioService) {
-    this.menuItems=sidebarService.menu;
-    this.usuario=this.usuarioService.usuario|| new Usuario('','','');
+  public usuario:Usuario= new Usuario('','','', 'USER_ROLE');
+  constructor(public sidebarService: SidebarService, private usuarioService:UsuarioService) {
+    this.usuario=this.usuarioService.usuario|| new Usuario('','','', 'USER_ROLE');
   }
   ngOnInit(): void {
   }

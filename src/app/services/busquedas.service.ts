@@ -29,7 +29,7 @@ export class BusquedasService {
   private transformarUsuarios(resultdos:any[]):Usuario[]{
 
     return resultdos.map(
-      user=> new Usuario(user.nombre, user.email, user.apellido, '', user.img, user.uid, user.role, user.google)
+      user=> new Usuario(user.nombre, user.email, user.apellido, user.role, user.img, user.uid, user.role, user.google)
     );
   }
   private transformarHospitales(resultados:any[]):Hospital[]{
@@ -62,6 +62,11 @@ export class BusquedasService {
         })
       )
 
+  }
+  busquedaGlobal(termino:string){
+    const url=`${base_url}/todo/${termino}`;
+
+    return this.http.get<any[]>(url, this.headers);
   }
 
 }

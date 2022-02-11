@@ -55,10 +55,8 @@ export class MedicoComponent implements OnInit, OnDestroy{
   }
 
   cargarMedico(id:string){
-    console.log('este'+id);
     this.medicoService.getMedico(id).subscribe(
       (medico)=>{
-        console.log("este es"+medico);
         if (medico._id===''){
           return this.router.navigateByUrl(`/dashboard/medicos`);
         }
@@ -99,13 +97,10 @@ export class MedicoComponent implements OnInit, OnDestroy{
 
   }
 
-  onChange(deviceValue:any) {
-    console.log(deviceValue);
-  }
+
   guardarMedico(){
     this.medicoSeleccionado.nombre=this.medicoForm.get('nombre')?.value;
     this.medicoSeleccionado.hospital=this.medicoForm.get('hospital')?.value;
-    console.log(this.medicoSeleccionado._id);
     if (this.medicoSeleccionado._id===''){
       //crear medico
       this.medicoService.crearMedico(this.medicoSeleccionado).subscribe
@@ -117,7 +112,6 @@ export class MedicoComponent implements OnInit, OnDestroy{
         })
     }
     else{
-      console.log('va a actualizar');
       //actualizar
       this.medicoService.actualizarMedico(this.medicoSeleccionado).subscribe
         (resp=>{
@@ -131,7 +125,6 @@ export class MedicoComponent implements OnInit, OnDestroy{
   }
 
   abrirModal(medico:Medico){
-    console.log(medico);
     this.modalImagenService.abrirModal('medicos', medico._id||'', medico.img||'');
 
   }

@@ -42,7 +42,6 @@ export class RegisterComponent {
     })
 
     this.formSubmited=true;
-    console.log(this.registerForm.value);
     if (this.registerForm.invalid){
       return;
     }

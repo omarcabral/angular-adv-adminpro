@@ -6,10 +6,10 @@ export class Usuario{
     public nombre: string,
     public email:string,
     public apellido: string,
+    public role: 'ADMIN_ROLE'|'USER_ROLE',
     public password?:string,
     public img?: string,
     public uid?:string,
-    public role?: string,
     public google?: Boolean
   ){
 

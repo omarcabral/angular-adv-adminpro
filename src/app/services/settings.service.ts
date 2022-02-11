@@ -29,6 +29,5 @@ export class SettingsService {
         elem.classList.add('working');
       }
     });
-    console.log(links);
   }
 }

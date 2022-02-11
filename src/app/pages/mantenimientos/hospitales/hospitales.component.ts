@@ -41,7 +41,6 @@ export class HospitalesComponent implements OnInit, OnDestroy {
     )
     .subscribe(img =>
       {
-      console.log(img);
       this.cargarHospitales();
       });
    }
@@ -78,7 +77,6 @@ export class HospitalesComponent implements OnInit, OnDestroy {
     }
       this.busquedaService.buscar('hospitales', termino)
       .subscribe((resp:any)=>{
-        console.log(resp);
         this.hospitales=resp;
       });
 
@@ -92,7 +90,6 @@ export class HospitalesComponent implements OnInit, OnDestroy {
           text:hospital.nombre
         })
       })
-    console.log(hospital);
   }
   eliminarHospital(hospital:Hospital){
     this.hospitalService.eliminarHospital(hospital._id)
@@ -127,7 +124,6 @@ export class HospitalesComponent implements OnInit, OnDestroy {
     }
   }
   abrirModal(hospital:Hospital){
-    console.log(hospital);
     this.modalImagenService.abrirModal('hospitales', hospital._id||'', hospital.img||'');
 
   }
