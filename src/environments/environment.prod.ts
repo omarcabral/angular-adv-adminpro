@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  base_url:'http://localhost:3000/api/usuarios'
+  base_url:'https://adminpro-backe-omar.herokuapp.com/api'
 };
